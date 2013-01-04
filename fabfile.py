@@ -17,7 +17,10 @@ if "JYTHON_HOME" in os.environ:
     del os.environ["JYTHON_HOME"]
 
 
-def get_jython_home(version="2.5.3"):
+DEFAULT_JYTHON_VERSION="2.5.3"
+
+
+def get_jython_home(version=DEFAULT_JYTHON_VERSION):
     JYTHON_HOME="/usr/local/Cellar/jython/%s/libexec" % version
 
     if not os.path.exists(JYTHON_HOME):
@@ -27,7 +30,7 @@ def get_jython_home(version="2.5.3"):
 
 
 @task
-def virtualenv(name="venv", version="2.5.3"):
+def virtualenv(name="venv", version=DEFAULT_JYTHON_VERSION):
     """ build a jython virtualenv
     """
     # clean out any previous built virtualenvs
@@ -59,7 +62,7 @@ def install_ipython(venv="venv"):
 
 
 @task
-def nxjython(version="2.5.3"):
+def nxjython(version=DEFAULT_JYTHON_VERSION):
     """ nxjython -- create a nexiles jython jar.
 
     The jython jar file will be standalonene -- it contains all the
@@ -111,7 +114,7 @@ def nxjython(version="2.5.3"):
 
 
 @task
-def full_monty(version="2.5.3"):
+def full_monty(version=DEFAULT_JYTHON_VERSION):
     """ full build run
 
     Build Virtualenv, install requirements, instal ipython, build jython jar
@@ -132,7 +135,7 @@ def full_monty(version="2.5.3"):
 
 
 @task
-def dist(version="2.5.3"):
+def dist(version=DEFAULT_JYTHON_VERSION):
     """ copy distribution
     """
 
