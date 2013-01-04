@@ -37,7 +37,7 @@ This will make sure you have fabric installed.  Then do:
 
     $ fab full_monty
 
-This will run for several minutes and generate a jython-nx-<<version>>.jar.  You
+This will run for several minutes and generate a jython-nx-<version>.jar.  You
 should now be able to do something like:
 
     $ java -jar jython-nx-2.5.3.jar

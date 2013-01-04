@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 __docformat__ = 'plaintext'
-__fabric__ = '1.3.3'
+__fabric__ = '1.5.1'
 
 import os
 
@@ -11,7 +11,10 @@ from fabric.api import settings
 from fabric.api import lcd
 from fabric.api import prefix
 from fabric.utils import abort
-#from fabric.colors import red, green, yellow
+
+# JYTHON_HOME must be unset!
+if "JYTHON_HOME" in os.environ:
+    del os.environ["JYTHON_HOME"]
 
 
 def get_jython_home(version="2.5.3"):
@@ -22,13 +25,14 @@ def get_jython_home(version="2.5.3"):
 
     return JYTHON_HOME
 
-if "JYTHON_HOME" in os.environ:
-    del os.environ["JYTHON_HOME"]
 
 @task
 def virtualenv(name="venv", version="2.5.3"):
     """ build a jython virtualenv
     """
+    # clean out any previous built virtualenvs
+    local("rm -rf %s" % name)
+
     jython_home = get_jython_home(version=version)
 
     # compute the full path of the current jython executable
@@ -53,10 +57,10 @@ def install_ipython(venv="venv"):
     with prefix("source venv/bin/activate"):
         local("pip install git+git://github.com/seletz/ipython.git@0.10.2-jython#egg=ipython")
 
+
 @task
 def nxjython(version="2.5.3"):
-    """
-    nxjython -- create a nexiles jython jar.
+    """ nxjython -- create a nexiles jython jar.
 
     The jython jar file will be standalonene -- it contains all the
     standard library and the packages which are installed in the local
@@ -67,9 +71,8 @@ def nxjython(version="2.5.3"):
 
     PACKAGE_NAME="jython-nx-%s.jar" % version
 
-
     # clean stuff from previous runs
-    local("rm -rf Lib jython-nx.jar jython.jar cachedir Lib_x")
+    clean()
 
     # copy jython.jar
     local("cp %s/jython.jar ." % jython_home)
@@ -77,7 +80,7 @@ def nxjython(version="2.5.3"):
     # copy std Lib dir
     local("cp -r %s/Lib ." % jython_home)
 
-    # Copy nexiles-fu scripts
+    # Copy nexiles specific scripts
     local("cp src/*.py Lib")
 
     # delete site-packages
@@ -102,13 +105,19 @@ def nxjython(version="2.5.3"):
     local("rm -rf Lib jython.jar")
     local("java -jar %s -c 'import flask; print flask.__file__'" % PACKAGE_NAME)
 
-    local("cp %s /Volumes/settr-vm-nexiles/xfer" % PACKAGE_NAME)
+    # move to build directory
+    local("mkdir build")
+    local("mv %s build" % PACKAGE_NAME)
 
 
 @task
 def full_monty(version="2.5.3"):
-    """do everything"""
+    """ full build run
 
+    Build Virtualenv, install requirements, instal ipython, build jython jar
+    """
+
+    # clean stuff from previous runs
     clean()
 
     # build virtual env
@@ -121,8 +130,35 @@ def full_monty(version="2.5.3"):
     # build nx jython jar file
     nxjython(version=version)
 
+
+@task
+def dist(version="2.5.3"):
+    """ copy distribution
+    """
+
+    dropbox   = os.path.expanduser("~/Dropbox")
+    dist_dir  = os.path.join(dropbox, "dist", "nexiles.jython", "nexiles.jython-%s" % version)
+
+    # create dist dir
+    local("mkdir -p %s" % dist_dir)
+
+    # build the docs
+    with lcd("docs"):
+        local("make html")
+
+        # copy docs to dist dir
+        with lcd("_build/html"):
+            local("tar czf {dist_dir}/nexiles.jython-doc-{version}.tgz .".format(dist_dir=dist_dir, version=version))
+
+    # copy contents of build dir
+    local("cp build/* %s" % dist_dir)
+
+    # copy README
+    local("cp README.md %s" % dist_dir)
+
+
 @task
 def clean():
-    local("rm -rf venv Lib jython.jar cachedir")
+    local("rm -rf Lib jython.jar cachedir build")
 
 # vim: set ft=python ts=4 sw=4 expandtab :
