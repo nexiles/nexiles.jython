@@ -17,11 +17,11 @@ if "JYTHON_HOME" in os.environ:
     del os.environ["JYTHON_HOME"]
 
 
-DEFAULT_JYTHON_VERSION="2.5.3"
+DEFAULT_JYTHON_VERSION = "2.5.3"
 
 
 def get_jython_home(version=DEFAULT_JYTHON_VERSION):
-    JYTHON_HOME="/usr/local/Cellar/jython/%s/libexec" % version
+    JYTHON_HOME = "/usr/local/Cellar/jython/%s/libexec" % version
 
     if not os.path.exists(JYTHON_HOME):
         abort("Can't locate jython.jar in %s" % JYTHON_HOME)
@@ -72,7 +72,7 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
 
     jython_home = get_jython_home(version=version)
 
-    PACKAGE_NAME="jython-nx-%s.jar" % version
+    PACKAGE_NAME = "jython-nx-%s.jar" % version
 
     # clean stuff from previous runs
     clean()
