@@ -29,6 +29,10 @@ def get_jython_home(version=DEFAULT_JYTHON_VERSION):
     return JYTHON_HOME
 
 
+def get_package_name(version):
+    return "jython-nx-%s.jar" % version
+
+
 @task
 def virtualenv(name="venv", version=DEFAULT_JYTHON_VERSION):
     """ build a jython virtualenv
@@ -72,7 +76,7 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
 
     jython_home = get_jython_home(version=version)
 
-    PACKAGE_NAME = "jython-nx-%s.jar" % version
+    PACKAGE_NAME = get_package_name(version)
 
     # clean stuff from previous runs
     clean()
