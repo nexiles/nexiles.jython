@@ -54,7 +54,7 @@ def install_requirements(venv="venv", requirements="requirements-jython.txt"):
     """ activates and installs requirements
     """
     with prefix("source venv/bin/activate"):
-        local("pip install -r %s" % requirements)
+        local("pip install --download-cache pip-cache -r %s" % requirements)
 
 
 @task
@@ -62,7 +62,7 @@ def install_ipython(venv="venv"):
     """ activates and installs requirements
     """
     with prefix("source venv/bin/activate"):
-        local("pip install git+git://github.com/seletz/ipython.git@0.10.2-jython#egg=ipython")
+        local("pip install --download-cache pip-cache git+git://github.com/seletz/ipython.git@0.10.2-jython#egg=ipython")
 
 
 @task
