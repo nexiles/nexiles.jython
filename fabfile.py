@@ -85,9 +85,6 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
 
     PACKAGE_NAME = get_package_name(version)
 
-    # clean stuff from previous runs
-    clean()
-
     # copy jython.jar
     local("cp %s/jython.jar ." % jython_home)
 
@@ -120,7 +117,7 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
     local("java -jar %s -c 'import flask; print flask.__file__'" % PACKAGE_NAME)
 
     # move to build directory
-    local("mkdir build")
+    local("mkdir -p build")
     local("mv %s build" % PACKAGE_NAME)
 
 
