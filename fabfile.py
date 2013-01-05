@@ -66,6 +66,13 @@ def install_ipython(venv="venv"):
 
 
 @task
+def jython(version=DEFAULT_JYTHON_VERSION):
+    """launches a REPL with the **local** jython"""
+    PACKAGE_NAME = get_package_name(version)
+    local("java -jar build/%s -mnxipython" % PACKAGE_NAME)
+
+
+@task
 def nxjython(version=DEFAULT_JYTHON_VERSION):
     """ nxjython -- create a nexiles jython jar.
 
