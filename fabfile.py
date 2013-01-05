@@ -173,6 +173,14 @@ def dist(version=DEFAULT_JYTHON_VERSION):
 
 @task
 def clean():
-    local("rm -rf Lib jython.jar cachedir build")
+    """clean up leftover files."""
+    local("rm -rf Lib jython.jar cachedir")
+
+
+@task
+def dist_clean():
+    """clean up leftover files AND all previous builds"""
+    clean()
+    local("rm -rf build")
 
 # vim: set ft=python ts=4 sw=4 expandtab :
