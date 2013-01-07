@@ -6,6 +6,12 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
+PROJECT_NAME  = nexiles.jython
+VERSION       = 0.2
+PUBLIC_DIR    = /srv/static/$(PROJECT_NAME)/$(VERSION)
+PUBLIC_HOST   = silverdwarf
+PUBLIC        = $(PUBLIC_HOST):$(PUBLIC_DIR)
+
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -37,6 +43,14 @@ help:
 	@echo "  changes    to make an overview of all changed/added/deprecated items"
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
+
+public:
+	echo "Copying to $(PUBLIC_DIR) @ $(PUBLIC_HOST)"
+	ssh $(PUBLIC_HOST) "mkdir -p $(PUBLIC_DIR)"
+	scp -r $(BUILDDIR)/html/* $(PUBLIC)
+
+preview:
+	@open $(BUILDDIR)/html/index.html
 
 clean:
 	-rm -rf $(BUILDDIR)/*

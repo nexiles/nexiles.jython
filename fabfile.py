@@ -16,8 +16,9 @@ from fabric.utils import abort
 if "JYTHON_HOME" in os.environ:
     del os.environ["JYTHON_HOME"]
 
-
+NXJYTHON_VERSION = "0.2"
 DEFAULT_JYTHON_VERSION = "2.5.3"
+DEFAULT_BASENAME = "jython-nx"
 
 
 def get_jython_home(version=DEFAULT_JYTHON_VERSION):
@@ -28,9 +29,12 @@ def get_jython_home(version=DEFAULT_JYTHON_VERSION):
 
     return JYTHON_HOME
 
+def get_dist_dir(version=DEFAULT_JYTHON_VERSION):
+    dropbox   = os.path.expanduser("~/Dropbox")
+    return os.path.join(dropbox, "dist", "nexiles.jython", "nexiles.jython-%s-%s" % (version, NXJYTHON_VERSION))
 
-def get_package_name(version):
-    return "jython-nx-%s.jar" % version
+def get_package_name(version, basename=DEFAULT_BASENAME):
+    return "%s-%s-%s" % (basename, version, NXJYTHON_VERSION)
 
 
 @task
@@ -68,8 +72,8 @@ def install_ipython(venv="venv"):
 @task
 def jython(version=DEFAULT_JYTHON_VERSION):
     """launches a REPL with the **local** jython"""
-    PACKAGE_NAME = get_package_name(version)
-    local("java -jar build/%s -mnxipython" % PACKAGE_NAME)
+    package_name = get_package_name(version) + ".jar"
+    local("java -jar build/%s -mnxipython" % package_name)
 
 
 @task
@@ -83,7 +87,7 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
 
     jython_home = get_jython_home(version=version)
 
-    PACKAGE_NAME = get_package_name(version)
+    package_name = get_package_name(version) + ".jar"
 
     # copy jython.jar
     local("cp %s/jython.jar ." % jython_home)
@@ -109,16 +113,16 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
         local("java -jar jython.jar -m compileall Lib")
 
     # package new package
-    local("cp jython.jar %s" % PACKAGE_NAME)
-    local("zip -r %s Lib" % PACKAGE_NAME)
+    local("cp jython.jar %s" % package_name)
+    local("zip -r %s Lib" % package_name)
 
     # test
     local("rm -rf Lib jython.jar")
-    local("java -jar %s -c 'import flask; print flask.__file__'" % PACKAGE_NAME)
+    local("java -jar %s -c 'import flask; print flask.__file__'" % package_name)
 
     # move to build directory
     local("mkdir -p build")
-    local("mv %s build" % PACKAGE_NAME)
+    local("mv %s build" % package_name)
 
 
 @task
@@ -147,8 +151,9 @@ def dist(version=DEFAULT_JYTHON_VERSION):
     """ copy distribution
     """
 
-    dropbox   = os.path.expanduser("~/Dropbox")
-    dist_dir  = os.path.join(dropbox, "dist", "nexiles.jython", "nexiles.jython-%s" % version)
+    dist_dir     = get_dist_dir()
+    package_name = get_package_name(version) + ".jar"
+    doc_package  = get_package_name(version, basename="%s-doc" % DEFAULT_BASENAME)
 
     # create dist dir
     local("mkdir -p %s" % dist_dir)
@@ -159,10 +164,10 @@ def dist(version=DEFAULT_JYTHON_VERSION):
 
         # copy docs to dist dir
         with lcd("_build/html"):
-            local("tar czf {dist_dir}/nexiles.jython-doc-{version}.tgz .".format(dist_dir=dist_dir, version=version))
+            local("tar czf {dist_dir}/{doc_package}.tgz .".format(dist_dir=dist_dir, doc_package=doc_package))
 
     # copy contents of build dir
-    local("cp build/* %s" % dist_dir)
+    local("cp build/%s %s" % (package_name, dist_dir))
 
     # copy README
     local("cp README.md %s" % dist_dir)
