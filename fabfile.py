@@ -17,8 +17,11 @@ if "JYTHON_HOME" in os.environ:
     del os.environ["JYTHON_HOME"]
 
 
-def get_jython_home(version="2.5.3"):
-    JYTHON_HOME="/usr/local/Cellar/jython/%s/libexec" % version
+DEFAULT_JYTHON_VERSION = "2.5.3"
+
+
+def get_jython_home(version=DEFAULT_JYTHON_VERSION):
+    JYTHON_HOME = "/usr/local/Cellar/jython/%s/libexec" % version
 
     if not os.path.exists(JYTHON_HOME):
         abort("Can't locate jython.jar in %s" % JYTHON_HOME)
@@ -26,8 +29,12 @@ def get_jython_home(version="2.5.3"):
     return JYTHON_HOME
 
 
+def get_package_name(version):
+    return "jython-nx-%s.jar" % version
+
+
 @task
-def virtualenv(name="venv", version="2.5.3"):
+def virtualenv(name="venv", version=DEFAULT_JYTHON_VERSION):
     """ build a jython virtualenv
     """
     # clean out any previous built virtualenvs
@@ -47,7 +54,7 @@ def install_requirements(venv="venv", requirements="requirements-jython.txt"):
     """ activates and installs requirements
     """
     with prefix("source venv/bin/activate"):
-        local("pip install -r %s" % requirements)
+        local("pip install --download-cache pip-cache -r %s" % requirements)
 
 
 @task
@@ -55,11 +62,18 @@ def install_ipython(venv="venv"):
     """ activates and installs requirements
     """
     with prefix("source venv/bin/activate"):
-        local("pip install git+git://github.com/seletz/ipython.git@0.10.2-jython#egg=ipython")
+        local("pip install --download-cache pip-cache git+git://github.com/seletz/ipython.git@0.10.2-jython#egg=ipython")
 
 
 @task
-def nxjython(version="2.5.3"):
+def jython(version=DEFAULT_JYTHON_VERSION):
+    """launches a REPL with the **local** jython"""
+    PACKAGE_NAME = get_package_name(version)
+    local("java -jar build/%s -mnxipython" % PACKAGE_NAME)
+
+
+@task
+def nxjython(version=DEFAULT_JYTHON_VERSION):
     """ nxjython -- create a nexiles jython jar.
 
     The jython jar file will be standalonene -- it contains all the
@@ -69,10 +83,7 @@ def nxjython(version="2.5.3"):
 
     jython_home = get_jython_home(version=version)
 
-    PACKAGE_NAME="jython-nx-%s.jar" % version
-
-    # clean stuff from previous runs
-    clean()
+    PACKAGE_NAME = get_package_name(version)
 
     # copy jython.jar
     local("cp %s/jython.jar ." % jython_home)
@@ -106,12 +117,12 @@ def nxjython(version="2.5.3"):
     local("java -jar %s -c 'import flask; print flask.__file__'" % PACKAGE_NAME)
 
     # move to build directory
-    local("mkdir build")
+    local("mkdir -p build")
     local("mv %s build" % PACKAGE_NAME)
 
 
 @task
-def full_monty(version="2.5.3"):
+def full_monty(version=DEFAULT_JYTHON_VERSION):
     """ full build run
 
     Build Virtualenv, install requirements, instal ipython, build jython jar
@@ -132,7 +143,7 @@ def full_monty(version="2.5.3"):
 
 
 @task
-def dist(version="2.5.3"):
+def dist(version=DEFAULT_JYTHON_VERSION):
     """ copy distribution
     """
 
@@ -159,6 +170,14 @@ def dist(version="2.5.3"):
 
 @task
 def clean():
-    local("rm -rf Lib jython.jar cachedir build")
+    """clean up leftover files."""
+    local("rm -rf Lib jython.jar cachedir")
+
+
+@task
+def dist_clean():
+    """clean up leftover files AND all previous builds"""
+    clean()
+    local("rm -rf build")
 
 # vim: set ft=python ts=4 sw=4 expandtab :
