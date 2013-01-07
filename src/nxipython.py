@@ -54,9 +54,13 @@ def nxipython(wtshell=False):
         from wt_classpath import set_windchill_classpath
         set_windchill_classpath(os.environ["WT_HOME"])
 
-    from IPython.Shell import IPShellEmbed
-    sh = IPShellEmbed()
-    return sh()
+    try:
+        from IPython.Shell import IPShellEmbed
+        sh = IPShellEmbed()
+        return sh()
+    except:
+        import code
+        return code.interact()
 
 if __name__ == "__main__":
     setup_logging(logging.INFO)

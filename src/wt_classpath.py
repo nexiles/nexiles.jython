@@ -35,8 +35,8 @@ from classpath_hacker import ClassPathHacker
 logger = logging.getLogger("wt_classpath")
 
 
-def get_jar_files(path):
-    """get_jar_files(path) -> sequence
+def get_jar_files(base, path):
+    """get_jar_files(base, path) -> sequence
 
     Fetch all jar files from the given path.  Filter out jython jar
     files.
@@ -44,7 +44,8 @@ def get_jar_files(path):
     def _(path):
         return re.match(".*jython.*.jar", path) is None
 
-    return filter(_, glob.glob(os.path.join(path, "*.jar")))
+    p = os.path.join(base, path)
+    return filter(_, glob.glob(os.path.join(p, "*.jar")))
 
 
 def set_windchill_classpath(WT_HOME):
@@ -59,11 +60,14 @@ def set_windchill_classpath(WT_HOME):
     """
     h = ClassPathHacker()
 
+    h.addFile(os.path.join(WT_HOME, "codebase"))
+
     jars_added = {}
 
-    for d in map(lambda x: os.path.join(WT_HOME, x), ["codebase", "codebase/lib", "codebase/WEB-INF/lib"]):
+    for d in [("codebase", "lib"), ("codebase", "WEB-INF", "lib")]:
+        d = os.path.join(*d)
         logger.info("Adding jar files from '%s'" % d)
-        for jarfile in get_jar_files(d):
+        for jarfile in get_jar_files(WT_HOME, d):
             p = os.path.basename(jarfile)
             if p not in jars_added:
                 logger.debug("Adding jar: %s" % jarfile)

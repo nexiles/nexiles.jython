@@ -24,10 +24,18 @@ __docformat__ = 'plaintext'
 import os
 import sys
 
+# get the nexiles jython package into the path.
 for index, p in enumerate(sys.path):
     if ".jar" in p:
         sys.path.insert(index+1, os.path.join(p, "site-packages"))
         break
+
+from monkey import patch
+patch()
+
+#from wt_classpath import set_windchill_classpath
+#if "WT_HOME" in os.environ:
+    #set_windchill_classpath(os.environ["WT_HOME"])
 
 packages = os.path.join(sys.prefix, "nexiles-packages.zip")
 if os.path.exists(packages):

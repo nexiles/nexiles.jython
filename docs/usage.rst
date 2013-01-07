@@ -42,8 +42,7 @@ Quickstart
 
     $ fab full_monty:version=2.5.3
 
-    .. note:: This assumes you have Jython 2.5.3 installed at
-              /usr/local/Cellar/jython/2.5.3"
+.. note:: This assumes you have Jython 2.5.3 installed at /usr/local/Cellar/jython/2.5.3
 
 #. Execute the standalone jython interpreter::
 
