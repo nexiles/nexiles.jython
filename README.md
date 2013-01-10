@@ -1,7 +1,7 @@
 nexiles.jython
 ==============
 
-:Version: 0.3
+:Version: 0.4
 :Date:    2013-01-10
 
 This is the nexiles jython toolbox.
