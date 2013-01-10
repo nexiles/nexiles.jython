@@ -1,5 +1,11 @@
-Welcome to nexiles.jython's documentation!
-==========================================
+==============
+nexiles.jython
+==============
+
+:Version: |version|
+:Release: |release|
+:Date:    |today|
+
 
 Contents:
 
