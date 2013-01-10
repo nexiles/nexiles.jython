@@ -1,8 +1,8 @@
 nexiles.jython
 ==============
 
-:Version: 0.2
-:Date:    2013-01-07
+:Version: 0.3
+:Date:    2013-01-10
 
 This is the nexiles jython toolbox.
 
@@ -28,4 +28,7 @@ The following packages are installed:
 
 Additionally a slightly hacked version of ipython for jython is installed.
 
-Please see the documentation in the `docs` folder for detailled docs.
+Documentation
+-------------
+
+Please see the [documentation](https://readthedocs.org/projects/nexilesjython/)

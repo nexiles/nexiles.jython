@@ -16,9 +16,9 @@ from fabric.utils import abort
 if "JYTHON_HOME" in os.environ:
     del os.environ["JYTHON_HOME"]
 
-NXJYTHON_VERSION = "0.2"
+NXJYTHON_VERSION       = "0.3"
 DEFAULT_JYTHON_VERSION = "2.5.3"
-DEFAULT_BASENAME = "jython-nx"
+DEFAULT_BASENAME       = "jython-nx"
 
 
 def get_jython_home(version=DEFAULT_JYTHON_VERSION):
@@ -29,9 +29,11 @@ def get_jython_home(version=DEFAULT_JYTHON_VERSION):
 
     return JYTHON_HOME
 
+
 def get_dist_dir(version=DEFAULT_JYTHON_VERSION):
     dropbox   = os.path.expanduser("~/Dropbox")
     return os.path.join(dropbox, "dist", "nexiles.jython", "nexiles.jython-%s-%s" % (version, NXJYTHON_VERSION))
+
 
 def get_package_name(version, basename=DEFAULT_BASENAME):
     return "%s-%s-%s" % (basename, version, NXJYTHON_VERSION)
