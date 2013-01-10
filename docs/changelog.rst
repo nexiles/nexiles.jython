@@ -1,12 +1,14 @@
 Change Log
 ==========
 
-0.4 - unreleased
+0.4 - 2013-01-01
 ----------------
 
 **Improvements**
     - Improved the docs.
       https://github.com/nexiles/nexiles.jython/issues/2
+
+    - added `LICENSE.txt`
 
 0.3 - 2013-01-10
 ----------------
