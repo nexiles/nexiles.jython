@@ -38,3 +38,4 @@ cachedir
 docs/_build
 tmp
 pip-cache
+jython.jar
