@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+0.3 - 2013-01-10
+----------------
+
+**Improvements**
+    - We now add WEB-INF/lib-python to the path using site.addsitedir().
+      This is symmetric to how modjy initializes the python interpreter and
+      will also process pth files.  This is only done when WT_HOME is set."
+
 0.2 - 2013-01-07
 ----------------
 

@@ -33,12 +33,12 @@ for index, p in enumerate(sys.path):
 from monkey import patch
 patch()
 
-#from wt_classpath import set_windchill_classpath
-#if "WT_HOME" in os.environ:
-    #set_windchill_classpath(os.environ["WT_HOME"])
+# add WEB-INF/lib-python as site dir if we have a WT_HOME
+if "WT_HOME" in os.environ:
+    from site import addsitedir
 
-packages = os.path.join(sys.prefix, "nexiles-packages.zip")
-if os.path.exists(packages):
-    sys.path.append(packages)
+    WT_HOME = os.environ["WT_HOME"]
+    addsitedir(os.path.join(WT_HOME, "codebase", "WEB-INF", "lib-python"))
+
 
 # vim: set ft=python ts=4 sw=4 expandtab :
