@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: monkey.py
-#
-# Copyright (c) nexiles GmbH
-#
 
 __author__    = """Stefan Eletzhofer <se@nexiles.de>"""
 __docformat__ = 'plaintext'
