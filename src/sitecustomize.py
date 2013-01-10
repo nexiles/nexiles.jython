@@ -27,7 +27,7 @@ import sys
 # get the nexiles jython package into the path.
 for index, p in enumerate(sys.path):
     if ".jar" in p:
-        sys.path.insert(index+1, os.path.join(p, "site-packages"))
+        sys.path.insert(index + 1, os.path.join(p, "site-packages"))
         break
 
 from monkey import patch
