@@ -7,7 +7,12 @@ Contents:
    :maxdepth: 2
 
    introduction
+   packages
    usage
+   building
+   monkey
+   contributing
+   license
    changelog
 
 

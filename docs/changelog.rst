@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+0.4 - unreleased
+----------------
+
+**Improvements**
+    - Improved the docs.
+      https://github.com/nexiles/nexiles.jython/issues/2
+
 0.3 - 2013-01-10
 ----------------
 
