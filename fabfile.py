@@ -16,7 +16,7 @@ from fabric.utils import abort
 if "JYTHON_HOME" in os.environ:
     del os.environ["JYTHON_HOME"]
 
-NXJYTHON_VERSION       = "0.3"
+NXJYTHON_VERSION       = "0.4"
 DEFAULT_JYTHON_VERSION = "2.5.3"
 DEFAULT_BASENAME       = "jython-nx"
 
