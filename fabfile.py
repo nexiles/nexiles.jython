@@ -106,6 +106,9 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
         # clean site-packages
         local("rm -rf site-packages/*")
 
+        # remove unit tests
+        local("rm -rf test")
+
         # copy site packages from venv to Lib
 
         local("cp -r ../venv/Lib/site-packages/* ./site-packages")
