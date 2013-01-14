@@ -179,6 +179,14 @@ def dist(version=DEFAULT_JYTHON_VERSION):
 
 
 @task
+def install():
+    """
+    installs wrapper scripts
+    """
+    local("install bin/nxjython ~/bin")
+    local("install bin/nxpip ~/bin")
+
+@task
 def clean():
     """clean up leftover files."""
     local("rm -rf Lib jython.jar cachedir")

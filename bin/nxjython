@@ -1,0 +1,19 @@
+#!/bin/bash
+
+export NX_DIST=~/Dropbox/dist/nexiles.jython
+export JYTHON_VERSION="2.5.3"
+export NX_JYTHON_VERSION="0.2"
+
+PACKAGE="nexiles.jython-$JYTHON_VERSION-$NX_JYTHON_VERSION"
+JAR_FILE="$NX_DIST/$PACKAGE/jython-nx-$JYTHON_VERSION-$NX_JYTHON_VERSION.jar"
+
+# development version
+JAR_FILE="/Users/seletz/develop/nexiles/nexiles.jython/build/jython-nx-2.5.3-0.5dev.jar"
+
+test -f "$JAR_FILE" || {
+    echo "jar file missing: $JAR_FILE"
+    exit 10
+}
+
+echo "JAR_FILE=$JAR_FILE"
+java -jar "$JAR_FILE" $@
