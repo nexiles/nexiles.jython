@@ -4,7 +4,12 @@ Change Log
 0.5 - unreleased
 ----------------
 
-no changes yet
+**Improvements**
+    - removed the python.org tests from the deployed package to save space.
+
+**Bug Fixes**
+    - Fix a bug where distutils would break.
+      https://github.com/nexiles/nexiles.jython/issues/5
 
 0.4 - 2013-01-01
 ----------------
