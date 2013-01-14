@@ -6,6 +6,10 @@ __docformat__ = 'plaintext'
 import os
 import sys
 
+# distutils barfs if sys.executable is not set
+if sys.executable is None:
+    sys.executable = os.path.abspath(sys.argv[0])
+
 # get the nexiles jython package into the path.
 for index, p in enumerate(sys.path):
     if ".jar" in p:
