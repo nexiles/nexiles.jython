@@ -13,7 +13,8 @@ if sys.executable is None:
 # get the nexiles jython package into the path.
 for index, p in enumerate(sys.path):
     if ".jar" in p:
-        sys.path.insert(index + 1, os.path.join(p, "site-packages"))
+        site_packages_dir = os.path.join(p, "site-packages")
+        sys.path.insert(index + 1, site_packages_dir)
         break
 
 from monkey import patch
@@ -25,6 +26,10 @@ if "WT_HOME" in os.environ:
 
     WT_HOME = os.environ["WT_HOME"]
     addsitedir(os.path.join(WT_HOME, "codebase", "WEB-INF", "lib-python"))
+
+    if "SETUP_WT_CLASSPATH" in os.environ:
+        import wt_classpath
+        wt_classpath.set_windchill_classpath(WT_HOME)
 
 
 # vim: set ft=python ts=4 sw=4 expandtab :

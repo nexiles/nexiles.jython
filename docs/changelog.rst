@@ -8,6 +8,7 @@ Change Log
     - removed the python.org tests from the deployed package to save space.
     - the new fab task `install` which installs script wrappers
       https://github.com/nexiles/nexiles.jython/issues/3
+    - Support for per-user `site-packages` :ref:`usage`
 
 **Bug Fixes**
     - Fix a bug where distutils would break.

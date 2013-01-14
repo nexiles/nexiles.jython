@@ -18,6 +18,8 @@ Supported Use Cases
 **deployment**
     Deploy the package into a tomcat servlet container.
 
+**local development**
+
 Jython Shell
 ============
 
@@ -75,6 +77,22 @@ For the above to work, you must:
 - create a python WSGI app using e.g. Flask_ and have a WSGI handler
   available using the dotted name specified as `app_import_name` servlet
   parameter.
+
+Local Development
+=================
+
+To aid *local* development, the package has a `site.py` included which enables
+user site dirs.
+
+To use this, you need:
+
+- `PYTHONUSERBASE` set to a directory with your local packages or python
+  `.pth` files
+
+For local `windchill` development, you need to have:
+
+- `WT_HOME` set in your environment
+- `SETUP_WT_CLASSPATH` set
 
 
 .. _IPython: http://ipython.org/
