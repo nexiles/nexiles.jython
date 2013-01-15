@@ -185,7 +185,6 @@ def addpackage(sitedir, name, known_paths):
 def addsitedir(sitedir, known_paths=None):
     """Add 'sitedir' argument to sys.path if missing and handle .pth files in
     'sitedir'"""
-    print "addsitedir: %s known_paths=%r" % (sitedir, known_paths)
     if known_paths is None:
         known_paths = _init_pathinfo()
         reset = 1
@@ -346,7 +345,6 @@ def addusersitepackages(known_paths):
                                  "python" + sys.version[:3],
                                  "site-packages")
 
-    print "USER_SITE=%s" % USER_SITE
     if ENABLE_USER_SITE and os.path.isdir(USER_SITE):
         addsitedir(USER_SITE, known_paths)
     if ENABLE_USER_SITE:

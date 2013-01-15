@@ -1,19 +1,63 @@
 #!/bin/bash
 
+#set -x
+
 export NX_DIST=~/Dropbox/dist/nexiles.jython
 export JYTHON_VERSION="2.5.3"
-export NX_JYTHON_VERSION="0.2"
+export NX_JYTHON_VERSION="0.5dev"
 
 PACKAGE="nexiles.jython-$JYTHON_VERSION-$NX_JYTHON_VERSION"
 JAR_FILE="$NX_DIST/$PACKAGE/jython-nx-$JYTHON_VERSION-$NX_JYTHON_VERSION.jar"
 
-# development version
-JAR_FILE="/Users/seletz/develop/nexiles/nexiles.jython/build/jython-nx-2.5.3-0.5dev.jar"
+JYTHON_ARGS=""
+while [ $# -gt 0 ] ; do
+    case "$1" in
+        --devel)
+            JAR_FILE="/Users/seletz/develop/nexiles/nexiles.jython/build/jython-nx-2.5.3-0.5dev.jar"
+            echo "using development jar file: $JAR_FILE"
+            ;;
+        --ipython)
+            JYTHON_ARGS="$JYTHON_ARGS -mnxipython"
+            ;;
+        --wt)
+            export SETUP_WT_CLASSPATH=1
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
+PRG="$0"
+#--------------------------------------------------------------------------------------------
+# JAVA OPTIONS
+
+if [ -z "$JAVA_HOME" ] ; then
+   JAVA_CMD=java
+ else
+   JAVA_CMD="$JAVA_HOME/bin/java"
+fi
+
+
+if [ -z "$JAVA_MEM" ] ; then
+  JAVA_MEM=-Xmx512m
+fi
+
+if [ -z "$JAVA_STACK" ]; then
+   # 32 bit Java 6 needs the stack increased to at least 512k for
+   # test_cpickle to pass, but we don't want to shrink 64 bit Java's
+   # default of 1024k
+  JAVA_STACK=-Xss1024k
+fi
+
+JAVA_OPTS="$JAVA_OPTS $JAVA_MEM $JAVA_STACK -Dfile.encoding=UTF-8"
 
 test -f "$JAR_FILE" || {
     echo "jar file missing: $JAR_FILE"
     exit 10
 }
+${JAVA_CMD[@]} $JAVA_OPTS -jar $JAR_FILE -Dpython.executable="$PRG" $JYTHON_ARGS "$@"
+JYTHON_STATUS=$?
 
-echo "JAR_FILE=$JAR_FILE"
-java -jar "$JAR_FILE" $@
+exit $JYTHON_STATUS
