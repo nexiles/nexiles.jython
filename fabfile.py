@@ -130,6 +130,19 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
 
         local("cp -r ../venv/Lib/site-packages/* ./site-packages")
 
+    pack(version)
+
+
+@task
+def pack(version=DEFAULT_JYTHON_VERSION):
+    """pack -- creates the nxjython jar file w/o copying the packages over.
+    """
+    jython_home = get_jython_home(version=version)
+    package_name = get_package_name(version) + ".jar"
+
+    # copy jython.jar
+    local("cp %s/jython.jar ." % jython_home)
+
     # compile stuff
     with settings(warn_only=True):
         local("java -jar jython.jar -m compileall Lib")
