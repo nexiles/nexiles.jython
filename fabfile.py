@@ -4,13 +4,17 @@ __docformat__ = 'plaintext'
 __fabric__ = '1.5.1'
 
 import os
+import glob
 
 from fabric.api import task
 from fabric.api import local
 from fabric.api import settings
 from fabric.api import lcd
+from fabric.api import cd
 from fabric.api import prefix
 from fabric.utils import abort
+
+from fabric.colors import red, green
 
 # JYTHON_HOME must be unset!
 if "JYTHON_HOME" in os.environ:
@@ -77,6 +81,19 @@ def jython(version=DEFAULT_JYTHON_VERSION):
     package_name = get_package_name(version) + ".jar"
     local("java -jar build/%s -mnxipython" % package_name)
 
+
+@task
+def deploy(version=DEFAULT_JYTHON_VERSION):
+    """deploy to developmen windchill machine"""
+    package_name = get_package_name(version) + ".jar"
+    package_path = os.path.abspath(os.path.join("build", package_name))
+    WT_HOME = os.environ["WT_HOME"]
+    dest = os.path.join(WT_HOME, "codebase", "WEB-INF", "lib")
+    for jar in glob.glob(os.path.join(dest, DEFAULT_BASENAME+"*.jar")):
+        print red("deleting {} !".format(jar))
+        local("rm {}".format(jar))
+    local("cp {} {}".format(package_path, dest))
+    print green("deployed {} to {}".format(package_name, dest))
 
 @task
 def nxjython(version=DEFAULT_JYTHON_VERSION):
