@@ -13,7 +13,7 @@ import glob
 
 from classpath_hacker import ClassPathHacker
 
-logger = logging.getLogger("wt_classpath")
+#logger = logging.getLogger("wt_classpath")
 
 
 def get_jar_files(base, path):
@@ -47,15 +47,16 @@ def set_windchill_classpath(WT_HOME):
 
     for d in [("codebase", "lib"), ("codebase", "WEB-INF", "lib")]:
         d = os.path.join(*d)
-        logger.info("Adding jar files from '%s'" % d)
+        #logger.info("Adding jar files from '%s'" % d)
         for jarfile in get_jar_files(WT_HOME, d):
             p = os.path.basename(jarfile)
             if p not in jars_added:
-                logger.debug("Adding jar: %s" % jarfile)
+                #logger.debug("Adding jar: %s" % jarfile)
                 jars_added[p] = os.path.dirname(jarfile)
                 h.addFile(jarfile)
             else:
-                logger.warn("Duplicate jar file: %s (first load from %s)" % (jarfile, jars_added[p]))
+                pass
+                #logger.warn("Duplicate jar file: %s (first load from %s)" % (jarfile, jars_added[p]))
 
 
 def main():
