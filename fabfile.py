@@ -20,7 +20,7 @@ from fabric.colors import red, green
 if "JYTHON_HOME" in os.environ:
     del os.environ["JYTHON_HOME"]
 
-NXJYTHON_VERSION       = "0.5dev"
+NXJYTHON_VERSION       = "0.5"
 DEFAULT_JYTHON_VERSION = "2.5.3"
 DEFAULT_BASENAME       = "jython-nx"
 

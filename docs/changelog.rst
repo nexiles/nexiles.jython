@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-0.5 - unreleased
+0.5 - 2013-02-14
 ----------------
 
 **Improvements**
