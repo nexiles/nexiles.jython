@@ -18,25 +18,19 @@ Supported Use Cases
 **deployment**
     Deploy the package into a tomcat servlet container.
 
+**local development**
+
 Jython Shell
 ============
 
-To call up a Jython shell manually, do::
+To call up a Jython shell, do::
 
-    $ java -jar <<path-to-package>>
-
-If you use our build packages, then this would be something like::
-
-    $ java -jar jython-nx-2.5.3-0.3.jar
-
-.. note:: Please refer to :ref:`building` for an explaination of the versioning scheme used.
+    $ nxjython
 
 If you want/need a IPython_ shell, use::
 
-    $ java -jar jython-nx-2.5.3-0.3.jar -mnxipython
+    $ nxjython --ipython
 
-.. note:: Currently, the IPython shell does not work on Windows -- see
-   https://github.com/nexiles/nexiles.jython/issues/1
 
 Deployment
 ==========
@@ -75,6 +69,44 @@ For the above to work, you must:
 - create a python WSGI app using e.g. Flask_ and have a WSGI handler
   available using the dotted name specified as `app_import_name` servlet
   parameter.
+
+Local Development
+=================
+
+To aid *local* development, the package has a `site.py` included which enables
+user site dirs.
+
+To use this, you need:
+
+- `PYTHONUSERBASE` set to a directory with your local packages or python
+  `.pth` files
+
+To launch a IPython_ shell, use the script wrapper::
+
+    $ nxjython --ipython
+
+Windchill
+---------
+
+For local `windchill` development, you need to have:
+
+- `WT_HOME` set in your environment
+- `SETUP_WT_CLASSPATH` set
+
+If you use the provided script wrapper, all you need to do is::
+
+    $ nxjython --wt yourscript.py
+
+This will start Jython, adds the `windchill` libs to the classpath and
+then executes `yourscript`.
+
+To call up a interactive IPython_ shell with `windchill` set up::
+
+    $ nxjython --wt --ipython
+
+On *Windows* or bare-bones installments, use::
+
+    $ java -jar jython-nx-<<JYTHON_VERSION>>-<<PACKAGE_VERSION>>.jar -mwtshell
 
 
 .. _IPython: http://ipython.org/
