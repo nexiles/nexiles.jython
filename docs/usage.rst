@@ -31,8 +31,6 @@ If you want/need a IPython_ shell, use::
 
     $ nxjython --ipython
 
-.. note:: Currently, the IPython_ shell does not work on Windows -- see
-   https://github.com/nexiles/nexiles.jython/issues/1
 
 Deployment
 ==========
@@ -105,6 +103,11 @@ then executes `yourscript`.
 To call up a interactive IPython_ shell with `windchill` set up::
 
     $ nxjython --wt --ipython
+
+On *Windows* or bare-bones installments, use::
+
+    $ java -jar jython-nx-<<JYTHON_VERSION>>-<<PACKAGE_VERSION>>.jar -mwtshell
+
 
 .. _IPython: http://ipython.org/
 .. _modjy:   http://opensource.xhaus.com/projects/show/modjy

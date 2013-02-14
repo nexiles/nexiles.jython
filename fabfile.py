@@ -56,7 +56,7 @@ def virtualenv(name="venv", version=DEFAULT_JYTHON_VERSION):
     jython_bin = os.path.join(jython_home, "jython")
 
     # create virtualenv
-    local("virtualenv -p %s %s" % (jython_bin, name))
+    local("virtualenv --distribute -p %s %s" % (jython_bin, name))
 
 
 @task
@@ -117,6 +117,9 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
     # Copy nexiles specific scripts
     local("cp src/*.py Lib")
 
+    # XXX: need to glob for distribute and pip eggs in venv/Lib/site_packages and
+    #      replace the versions in sitecustomize.py !!
+
     # delete site-packages
     with lcd("Lib"):
 
@@ -152,7 +155,7 @@ def pack(version=DEFAULT_JYTHON_VERSION):
     local("zip -r %s Lib" % package_name)
 
     # test
-    local("rm -rf Lib jython.jar")
+    local("rm -rf jython.jar")
     local("java -jar %s -c 'import flask; print flask.__file__'" % package_name)
 
     # move to build directory

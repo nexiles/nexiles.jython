@@ -11,7 +11,15 @@ for index, p in enumerate(sys.path):
     if ".jar" in p:
         site_packages_dir = os.path.join(p, "site-packages")
         sys.path.insert(index + 1, site_packages_dir)
+
+        # also add pip and distribute
+        sys.path.append(site_packages_dir + "/distribute-0.6.31-py2.5.egg")
+        sys.path.append(site_packages_dir + "/pip-1.2.1-py2.5.egg")
         break
+
+sys.add_package("org.json")
+sys.add_package("org.json.simple")
+sys.add_package("org.json.simple.parser")
 
 from monkey import patch
 patch()

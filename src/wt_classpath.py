@@ -59,12 +59,4 @@ def set_windchill_classpath(WT_HOME):
                 #logger.warn("Duplicate jar file: %s (first load from %s)" % (jarfile, jars_added[p]))
 
 
-def main():
-    WT_HOME = os.environ.get("WT_HOME")
-    assert WT_HOME, "WT_HOME not set"
-    set_windchill_classpath(WT_HOME)
-
-if __name__ == '__main__':
-    main()
-
 # vim: set ft=python ts=4 sw=4 expandtab :

@@ -5,12 +5,19 @@ Change Log
 ----------------
 
 **Improvements**
+    - add new `wtshell` module -- use like `nxjython -mwtshell` for boxen
+      where ipython does'nt work (Windows)
+      https://github.com/nexiles/nexiles.jython/issues/1
+    - now uses distribute instead of setuptools.  This means that we can
+      now build binary eggs! Yay!
     - removed the python.org tests from the deployed package to save space.
     - the new fab task `install` which installs script wrappers
       https://github.com/nexiles/nexiles.jython/issues/3
     - Support for per-user `site-packages` :ref:`usage`
 
 **Bug Fixes**
+    - workaround for windows/ipython issue.
+      https://github.com/nexiles/nexiles.jython/issues/1
     - Fix a bug where distutils would break.
       https://github.com/nexiles/nexiles.jython/issues/5
 
