@@ -5,6 +5,8 @@ Change Log
 ----------------
 
 **Bug Fixes**
+    - https://github.com/nexiles/nexiles.jython/issues/10: disable pip ssl cert
+      checking on install due to no ssl in jython 2.5
     - https://github.com/nexiles/nexiles.jython/issues/8: pip and
       distribute versions are now automatically set when building.
     - https://github.com/nexiles/nexiles.jython/issues/9: pin virtualenv
