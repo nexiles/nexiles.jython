@@ -4,7 +4,11 @@ Change Log
 0.6 - unreleased
 ----------------
 
-no changes yet
+**Bug Fixes**
+    - https://github.com/nexiles/nexiles.jython/issues/8: pip and
+      distribute versions are now automatically set when building.
+    - https://github.com/nexiles/nexiles.jython/issues/9: pin virtualenv
+      package -- they dropped python 2.5 support.
 
 0.5 - 2013-02-14
 ----------------

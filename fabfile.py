@@ -96,6 +96,35 @@ def deploy(version=DEFAULT_JYTHON_VERSION):
     print green("deployed {} to {}".format(package_name, dest))
 
 @task
+def fix_sitecustomize():
+    ## fix up sitecustomize
+    #
+    # need to glob for distribute and pip eggs in venv/Lib/site_packages and
+    # replace the versions in sitecustomize.py
+
+    # find versions
+    distribute_version = None
+    for entry in os.listdir("Lib/site-packages"):
+        if entry.startswith("distribute"):
+            _, distribute_version, _ = entry.split("-")
+            print green("distribute version: " + distribute_version)
+        if entry.startswith("pip"):
+            _, pip_version, _ = entry.split("-")
+            print green("pip version: " + pip_version)
+
+    if distribute_version is None:
+        raise RuntimeError("could not determine distribute version")
+
+    if pip_version is None:
+        raise RuntimeError("could not determine pip version")
+
+    with file("Lib/sitecustomize.py", "w") as sc:
+        for line in file("src/sitecustomize.py"):
+            line = line.replace("DISTRIBUTE_VERSION", distribute_version)
+            line = line.replace("PIP_VERSION", distribute_version)
+            sc.write(line)
+
+@task
 def nxjython(version=DEFAULT_JYTHON_VERSION):
     """ nxjython -- create a nexiles jython jar.
 
@@ -117,8 +146,6 @@ def nxjython(version=DEFAULT_JYTHON_VERSION):
     # Copy nexiles specific scripts
     local("cp src/*.py Lib")
 
-    # XXX: need to glob for distribute and pip eggs in venv/Lib/site_packages and
-    #      replace the versions in sitecustomize.py !!
 
     # delete site-packages
     with lcd("Lib"):
@@ -142,6 +169,8 @@ def pack(version=DEFAULT_JYTHON_VERSION):
     """
     jython_home = get_jython_home(version=version)
     package_name = get_package_name(version) + ".jar"
+
+    fix_sitecustomize()
 
     # copy jython.jar
     local("cp %s/jython.jar ." % jython_home)

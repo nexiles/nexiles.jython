@@ -13,8 +13,9 @@ for index, p in enumerate(sys.path):
         sys.path.insert(index + 1, site_packages_dir)
 
         # also add pip and distribute
-        sys.path.append(site_packages_dir + "/distribute-0.6.31-py2.5.egg")
-        sys.path.append(site_packages_dir + "/pip-1.2.1-py2.5.egg")
+        # NOTE THESE VERSIONS GET REPLACED WITH THE ACTUAL VERSIONS!
+        sys.path.append(site_packages_dir + "/distribute-DISTRIBUTE_VERSION-py2.5.egg")
+        sys.path.append(site_packages_dir + "/pip-PIP_VERSION-py2.5.egg")
         break
 
 sys.add_package("org.json")
