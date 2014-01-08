@@ -42,6 +42,23 @@ def get_dist_dir(version=DEFAULT_JYTHON_VERSION):
 def get_package_name(version, basename=DEFAULT_BASENAME):
     return "%s-%s-%s" % (basename, version, NXJYTHON_VERSION)
 
+def get_distribute_version():
+    # find versions
+    for entry in os.listdir("Lib/site-packages"):
+        if entry.startswith("distribute"):
+            _, distribute_version, _ = entry.split("-")
+            return distribute_version
+
+    return None
+
+def get_pip_version():
+    for entry in os.listdir("Lib/site-packages"):
+        if entry.startswith("pip"):
+            _, pip_version, _ = entry.split("-")
+            return pip_version
+
+    return None
+
 
 @task
 def virtualenv(name="venv", version=DEFAULT_JYTHON_VERSION):
@@ -102,26 +119,21 @@ def fix_sitecustomize():
     # need to glob for distribute and pip eggs in venv/Lib/site_packages and
     # replace the versions in sitecustomize.py
 
-    # find versions
-    distribute_version = None
-    for entry in os.listdir("Lib/site-packages"):
-        if entry.startswith("distribute"):
-            _, distribute_version, _ = entry.split("-")
-            print green("distribute version: " + distribute_version)
-        if entry.startswith("pip"):
-            _, pip_version, _ = entry.split("-")
-            print green("pip version: " + pip_version)
-
+    distribute_version = get_distribute_version()
     if distribute_version is None:
         raise RuntimeError("could not determine distribute version")
 
+    pip_version        = get_pip_version()
     if pip_version is None:
         raise RuntimeError("could not determine pip version")
+
+    print green("pip version: " + pip_version)
+    print green("distribute version: " + distribute_version)
 
     with file("Lib/sitecustomize.py", "w") as sc:
         for line in file("src/sitecustomize.py"):
             line = line.replace("DISTRIBUTE_VERSION", distribute_version)
-            line = line.replace("PIP_VERSION", distribute_version)
+            line = line.replace("PIP_VERSION", pip_version)
             sc.write(line)
 
 @task
